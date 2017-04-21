@@ -48,7 +48,10 @@ namespace CppHeaderGenarator
     {
         public HeaderFile(string filename)
         {
-            Filename = filename + ".h";
+            // 拡張子を外す
+            ;
+
+            Filename = filename.Replace(".h", "") + ".h";
             Contents = MakeIncludeGard(filename);
         }
         public string Filename { get; }
@@ -57,22 +60,22 @@ namespace CppHeaderGenarator
         private string MakeIncludeGard(string filename)
         {
             // 拡張子を外す
-            filename.Replace(".h","");
+            string FileNameWithout_DotH = filename.Replace(".h","");
 
             var IncludeGard = new StringBuilder();
-            IncludeGard.AppendLine("#ifdef  " + filename.ToUpper() + "_HEADER");
-            IncludeGard.AppendLine("#define " + filename.ToUpper() + "_HEADER");
+            IncludeGard.AppendLine("#ifdef  " + FileNameWithout_DotH.ToUpper() + "_HEADER");
+            IncludeGard.AppendLine("#define " + FileNameWithout_DotH.ToUpper() + "_HEADER");
             IncludeGard.AppendLine();
-            IncludeGard.AppendLine("class " + filename);
+            IncludeGard.AppendLine("class " + FileNameWithout_DotH);
             IncludeGard.AppendLine("{");
             IncludeGard.AppendLine("public:");
             IncludeGard.AppendLine("// コンストラクタ&デストラクタ");
-            IncludeGard.AppendLine(filename + "();");
-            IncludeGard.AppendLine("~" + filename + "();");
+            IncludeGard.AppendLine(FileNameWithout_DotH + "();");
+            IncludeGard.AppendLine("~" + FileNameWithout_DotH + "();");
             IncludeGard.AppendLine();
             IncludeGard.AppendLine("};");
             IncludeGard.AppendLine();
-            IncludeGard.AppendLine("#endif  " + filename.ToUpper() + "_HEADER");
+            IncludeGard.AppendLine("#endif  " + FileNameWithout_DotH.ToUpper() + "_HEADER");
 
             return IncludeGard.ToString();
         }
