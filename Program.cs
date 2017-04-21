@@ -63,19 +63,19 @@ namespace CppHeaderGenarator
             string FileNameWithout_DotH = filename.Replace(".h","");
 
             var IncludeGard = new StringBuilder();
-            IncludeGard.AppendLine("#ifdef  " + FileNameWithout_DotH.ToUpper() + "_HEADER");
-            IncludeGard.AppendLine("#define " + FileNameWithout_DotH.ToUpper() + "_HEADER");
+            IncludeGard.AppendLine("#ifdef\t" + FileNameWithout_DotH.ToUpper() + "_HEADER");
+            IncludeGard.AppendLine("#define\t" + FileNameWithout_DotH.ToUpper() + "_HEADER");
             IncludeGard.AppendLine();
             IncludeGard.AppendLine("class " + FileNameWithout_DotH);
             IncludeGard.AppendLine("{");
             IncludeGard.AppendLine("public:");
             IncludeGard.AppendLine("// コンストラクタ&デストラクタ");
-            IncludeGard.AppendLine(FileNameWithout_DotH + "();");
-            IncludeGard.AppendLine("~" + FileNameWithout_DotH + "();");
+            IncludeGard.AppendLine("\t" + FileNameWithout_DotH + "();");
+            IncludeGard.AppendLine("\t~" + FileNameWithout_DotH + "();");
             IncludeGard.AppendLine();
             IncludeGard.AppendLine("};");
             IncludeGard.AppendLine();
-            IncludeGard.AppendLine("#endif  " + FileNameWithout_DotH.ToUpper() + "_HEADER");
+            IncludeGard.AppendLine("#endif\t// " + FileNameWithout_DotH.ToUpper() + "_HEADER");
 
             return IncludeGard.ToString();
         }
