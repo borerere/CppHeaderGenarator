@@ -34,10 +34,14 @@ namespace CppHeaderGenarator
         {
             foreach(HeaderFile headerfile in HeaderFileList)
             {
+                // ファイル情報
                 string filename = headerfile.Filename;
                 string contents = headerfile.Contents;
 
-                File.WriteAllText(filename, contents);
+                // 文字コード
+                System.Text.Encoding enc = System.Text.Encoding.GetEncoding("shift_jis");
+
+                File.WriteAllText(filename, contents, enc);
             }
         }
 
@@ -48,9 +52,7 @@ namespace CppHeaderGenarator
     {
         public HeaderFile(string filename)
         {
-            // 拡張子を外す
-            ;
-
+            // filnename中の.hの有無に関わらず.hファイルを作成できるように対応
             Filename = filename.Replace(".h", "") + ".h";
             Contents = MakeIncludeGard(filename);
         }
@@ -59,7 +61,7 @@ namespace CppHeaderGenarator
 
         private string MakeIncludeGard(string filename)
         {
-            // 拡張子を外す
+            // filnenameに.hが書かれていた場合に、インクルードガードには不要なので.hを外す
             string FileNameWithout_DotH = filename.Replace(".h","");
 
             var IncludeGard = new StringBuilder();
