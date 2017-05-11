@@ -4,16 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CppHeaderGenarator
 {
     class Program
     {
+        [System.STAThreadAttribute()]
         static void Main(string[] args)
         {
-            // 引数で指定されたクラスのヘッダーファイルを作成します。
-            var hfg = new HeaderFileGenarator(args);
-            hfg.Generate();
+            while (true)
+            {
+                string filename = Console.ReadLine();
+                var hfg = new HeaderFileGenarator(filename);
+                hfg.Generate();
+                hfg.TxetToClipboard();
+            }
         }
     }
 
@@ -44,6 +50,14 @@ namespace CppHeaderGenarator
                 File.WriteAllText(filename, contents, enc);
             }
         }
+        public void TxetToClipboard()
+        {
+            foreach (HeaderFile headerfile in HeaderFileList)
+            {
+                string text = headerfile.Contents;
+                Clipboard.SetText(text);
+            }
+        }
 
         private List<HeaderFile> HeaderFileList = new List<HeaderFile>();
 
@@ -65,13 +79,13 @@ namespace CppHeaderGenarator
             string FileNameWithout_DotH = filename.Replace(".h","");
 
             var IncludeGard = new StringBuilder();
-            IncludeGard.AppendLine("#ifdef\t" + FileNameWithout_DotH.ToUpper() + "_HEADER");
+            IncludeGard.AppendLine("#ifndef\t" + FileNameWithout_DotH.ToUpper() + "_HEADER");
             IncludeGard.AppendLine("#define\t" + FileNameWithout_DotH.ToUpper() + "_HEADER");
             IncludeGard.AppendLine();
             IncludeGard.AppendLine("class " + FileNameWithout_DotH);
             IncludeGard.AppendLine("{");
             IncludeGard.AppendLine("public:");
-            IncludeGard.AppendLine("// コンストラクタ&デストラクタ");
+            IncludeGard.AppendLine("\t// コンストラクタ&デストラクタ");
             IncludeGard.AppendLine("\t" + FileNameWithout_DotH + "();");
             IncludeGard.AppendLine("\t~" + FileNameWithout_DotH + "();");
             IncludeGard.AppendLine();
